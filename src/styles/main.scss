@@ -1,0 +1,16 @@
+// Abstract
+@use "./abstract/variables.scss";
+
+// Components
+@use "./components/header.scss";
+
+// Pages
+
+
+
+
+// Global
+body {
+    margin: 0;
+    height: 200vh;
+}

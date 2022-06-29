@@ -63,6 +63,7 @@ export default function Header() {
           </div>
         </div>
       </div>
+      <div id="header-bottom"></div>
     </header>
   );
 }

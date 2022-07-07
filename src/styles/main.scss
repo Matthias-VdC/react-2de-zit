@@ -2,8 +2,8 @@
 @use "./abstract/variables.scss";
 
 // Components
-@use "./components/header.scss";
 @use "./components/post.scss";
+@use "./components/header.scss";
 
 // Pages
 @use "./pages/home.scss";

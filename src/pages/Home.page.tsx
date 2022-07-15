@@ -10,10 +10,15 @@ export default function Home() {
   const [nextPage, setNextPage] = useState(false);
 
   useEffect(() => {
-    fetchData(prevPage, nextPage, false).then((d) => {
-      setPostData(d);
+    fetchData().then((e: any) => {
+      if (e) {
+        // console.log(e!.post1.hasOwnProperty("nr"));
+        if (e!.post1.hasOwnProperty("nr") && e!.post2.hasOwnProperty("nr")) {
+          setPostData(e);
+        }
+      }
     });
-    window.addEventListener("scroll", (e) => {
+    window.addEventListener("scroll", () => {
       if (window.scrollY === 0 && window.screen.height > 1000) {
         setPage(1);
         setScrollState("scrollIn");

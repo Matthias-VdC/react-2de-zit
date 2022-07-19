@@ -71,6 +71,68 @@
     object-fit: contain;
 }
 
+.thumbs {
+    stroke:  $blue;
+    stroke-width: 2px;
+    fill: rgba(0,0,0,0);
+    overflow: visible;
+    transition: all 0.5s ease-in-out;
+}
+
+.thumbsDown {
+    transform: rotate(180deg);
+}
+
+.thumbs:hover {
+    cursor: pointer;
+}
+
+.thumbsUp:hover {
+    fill: $lupvote;
+    stroke: $lupvote;
+}
+
+.thumbsDown:hover {
+    fill: $ldownvote;
+    stroke: $ldownvote;
+}
+
+.thumbsDown:active {
+    transform: rotate(180deg) scale(0.9);   
+} 
+
+.thumbsUp:active {
+    transform: scale(0.9); 
+}
+
+.thumbsUpClick {
+    animation: thumbsUpClick 0.6s forwards ease-in-out;
+}
+
+.thumbsDownClick {
+    animation: thumbsDownClick 0.6s forwards ease-in-out;
+}
+
+.post-footer-like-container{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 35%;
+    height: 100%;
+    margin-left: 3%;
+}
+
+.post-body-hosted-video {
+    width: 60%;
+    height: auto;
+    object-fit: contain;
+}
+
+.post-body-link-thumbnail {
+    width: 400px;
+    height: auto;
+}
+
 .scrollIn {
     animation: fadeIn 0.5s ease-in-out forwards;
 }
@@ -78,6 +140,42 @@
 .scrollOut {
 
     animation: fadeOut 0.5s ease-in-out forwards;
+}
+
+@keyframes thumbsUpClick {
+    0% {
+        transform: rotate(0deg) scale(1);
+        fill: $upvote;
+        stroke: $upvote;
+    }
+    85% {
+        transform: rotate(370deg) scale(1.1);
+        fill: $upvote;
+        stroke: $upvote;
+    }
+    100% {
+        transform: rotate(360deg) scale(1);
+        fill: $upvote;
+        stroke: $upvote;
+    }
+}
+
+@keyframes thumbsDownClick {
+    0% {
+        transform: rotate(180deg) scale(1);
+        fill: $downvote;
+        stroke: $downvote;
+    }
+    85% {
+        transform: rotate(-550deg) scale(1.1);
+        fill: $downvote;
+        stroke: $downvote;
+    }
+    100% {
+        transform: rotate(-540deg) scale(1);
+        fill: $downvote;
+        stroke: $downvote;
+    }
 }
 
 @keyframes fadeIn {

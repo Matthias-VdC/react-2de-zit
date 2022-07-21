@@ -1,19 +1,22 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Post from "../components/posts/Post";
 import fetchData from "../services/RedditService";
-import { debounce } from "debounce";
 import Body from "../components/Body";
 
 export default function Home() {
   const [scrollState, setScrollState] = useState("scrollIn");
-  const [postData, setPostData] = useState<any>();
+  const [postData, setPostData] = useState<any>(null);
+  const [postList, setPostList] = useState<any>([]);
 
   useEffect(() => {
-    (async function fetchAll() {
-      let e = await fetchData(2, 2);
-      console.log(e);
-      return setPostData(e);
-    })();
+    async function fetch() {
+      try {
+        const response = await fetchData(2, 2);
+        setPostData(response);
+      } catch (e) {
+        console.error(e);
+      }
+    }
 
     window.addEventListener("scroll", () => {
       if (window.pageYOffset !== 0) {
@@ -22,14 +25,29 @@ export default function Home() {
         setScrollState("scrollIn");
       }
     });
+
+    fetch();
   }, []);
-  // https://stackoverflow.com/questions/14807436/difference-between-true-and-false-in-javascript-eventlistener
+  // Empty array makes it so that useEffect triggers only on first page mount
+
+  useEffect(() => {
+    setPostList([]);
+    for (const key in postData) {
+      // https://bobbyhadz.com/blog/react-push-to-state-array
+      setPostList((current: any) => [
+        ...current,
+        <Post data={postData[key]} key={key} />,
+      ]);
+    }
+  }, [postData]);
+  // Update on every change of postData
+
+  if (!postData) return null;
 
   return (
     <>
       <div id="home-post-container" className={scrollState}>
-        {postData ? <Post data={postData.post1} /> : null}
-        {postData ? <Post data={postData.post2} /> : null}
+        {postList}
       </div>
       <Body></Body>
     </>

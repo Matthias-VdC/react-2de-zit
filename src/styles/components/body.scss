@@ -1,0 +1,31 @@
+.scrollInBody {
+    animation: fadeInBody 0.5s ease-in-out forwards;
+}
+
+.scrollOutBody {
+
+    animation: fadeOutBody 0.5s ease-in-out forwards;
+}
+
+
+@keyframes fadeInBody {
+    0% {
+        opacity: 0%; 
+        transform: translateY(200px) scale(80%);
+    }
+    100% {
+        opacity: 100%;
+        transform: translateY(0) scale(100%);
+    }
+}
+
+@keyframes fadeOutBody {
+    0% {
+        opacity: 100%;
+        transform: translateY(0) scale(100%);
+    }
+    100% {
+        opacity: 0%; 
+        transform: translateY(200px) scale(80%);
+    }
+}

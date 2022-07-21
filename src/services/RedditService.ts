@@ -9,10 +9,10 @@ import SelfBody from "../components/posts/SelfBody";
 
 export default async function fetchData(count: number, limit: number) {
     let postData = {};
-
-    return ((async function dataHandler(after: any) {
+    // @ts-ignore: Unreachable code error
+    return (await (async function dataHandler(after: any) {
         let url = `https://www.reddit.com/.json?limit=${limit}&count=${count}&after=${after}`;
-
+        // @ts-ignore: Unreachable code error
         return (await fetch(url).then(response => response.json()).then(async data => {
             let afterPost = data.data.after;
             let isUndefined = false;
@@ -43,7 +43,7 @@ export default async function fetchData(count: number, limit: number) {
                     isUndefined = true;
                     url = url.replace(/(?<=&after=).*$/gm, afterPost);
                     console.log("undefined", afterPost, url);
-                    dataHandler(afterPost);
+                    return await dataHandler(afterPost);
                 }
 
                 // START - Get date difference for posts and convert to seconds/minutes/hours/days/years
@@ -175,7 +175,8 @@ export default async function fetchData(count: number, limit: number) {
                 }
             }
             // END - Added all used data to postData
-            if (!isUndefined) return postData; else dataHandler(afterPost);
+            console.log(postData);
+            if (!isUndefined) return postData; else return await dataHandler(afterPost);
         }));
     })(""));
 }

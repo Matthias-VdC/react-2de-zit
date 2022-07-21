@@ -7,10 +7,18 @@ export default function Post(props: any) {
   const [thumbsUpClick, setUpClick] = useState("");
   const [thumbsDownClick, setDownClick] = useState("");
   const [data, setData] = useState<any>();
+  const [upvotes, setUpvotes] = useState<any>();
 
   useEffect(() => {
     (async function getData() {
       setData(await props);
+
+      if (!data) return null;
+      if (!data.data) return null;
+      if (data.data.ups > 1000) {
+        // https://bobbyhadz.com/blog/javascript-round-number-to-1-decimal-place
+        setUpvotes((data.data.ups / 1000).toFixed(1));
+      }
     })();
   }, [data, props]);
 
@@ -53,7 +61,7 @@ export default function Post(props: any) {
               }}
               styling="thumbsUp"
             />
-            <p>{data.data.ups}</p>
+            <p>{upvotes}k</p>
             <Arrow
               clickValue={thumbsDownClick}
               onClick={() => {

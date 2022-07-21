@@ -6,6 +6,7 @@ export default function Header() {
   const [hamburger, setHamburger] = useState("header-hamburger");
   const [header, setHeader] = useState("header");
   const [hovered, setHovered] = useState(false);
+  const [bottomScroll, setBottomScroll] = useState("header-bottom");
 
   // hovered src: https://www.reddit.com/r/threejs/comments/l63kgm/change_mouse_to_pointer_on_hover_with_react_three/
 
@@ -13,56 +14,61 @@ export default function Header() {
     window.addEventListener("scroll", (e) => {
       if (window.scrollY === 0) {
         setHeader("header");
+        setBottomScroll("header-bottom");
       } else {
         setHeader("header-scroll");
+        setBottomScroll("header-bottom-scroll");
       }
     });
     document.body.style.cursor = hovered ? "pointer" : "auto";
   }, [hovered]);
 
   return (
-    <header id={header}>
-      <div id="header-container">
-        <div
-          onPointerOver={() => {
-            setHovered(true);
-          }}
-          onPointerOut={() => {
-            setHovered(false);
-          }}
-          id="header-logo-container"
-        >
-          <img id="header-logo" src={logo} alt="" />
-        </div>
-        <input id="header-search" type="text" placeholder="Search Reddit" />
-        <div
-          onPointerOver={() => {
-            setHovered(true);
-          }}
-          onPointerOut={() => {
-            setHovered(false);
-          }}
-          id="header-search-button"
-        >
-          <SearchIcon />
-        </div>
-        <div>
+    <>
+      <header id={header} style={{ zIndex: 9 }}>
+        <div id="header-container">
           <div
-            onClick={(e) => {
-              if (hamburger === "header-hamburger") {
-                setHamburger("header-hamburger-click");
-              } else {
-                setHamburger("header-hamburger");
-              }
+            onPointerOver={() => {
+              setHovered(true);
             }}
-            id={hamburger}
+            onPointerOut={() => {
+              setHovered(false);
+            }}
+            id="header-logo-container"
           >
-            <div id="header-hamburger-top" />
-            <div id="header-hamburger-mid" />
-            <div id="header-hamburger-bot" />
+            <img id="header-logo" src={logo} alt="" />
+          </div>
+          <input id="header-search" type="text" placeholder="Search Reddit" />
+          <div
+            onPointerOver={() => {
+              setHovered(true);
+            }}
+            onPointerOut={() => {
+              setHovered(false);
+            }}
+            id="header-search-button"
+          >
+            <SearchIcon />
+          </div>
+          <div>
+            <div
+              onClick={(e) => {
+                if (hamburger === "header-hamburger") {
+                  setHamburger("header-hamburger-click");
+                } else {
+                  setHamburger("header-hamburger");
+                }
+              }}
+              id={hamburger}
+            >
+              <div id="header-hamburger-top" />
+              <div id="header-hamburger-mid" />
+              <div id="header-hamburger-bot" />
+            </div>
           </div>
         </div>
-      </div>
-    </header>
+      </header>
+      <div id={bottomScroll} style={{ zIndex: -99999 }}></div>
+    </>
   );
 }

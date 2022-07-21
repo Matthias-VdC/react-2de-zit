@@ -2,9 +2,12 @@
 @use "./abstract/variables.scss";
 
 // Components
+@use "./components/body.scss";
+@use "./components/post.scss";
 @use "./components/header.scss";
 
 // Pages
+@use "./pages/home.scss";
 
 
 

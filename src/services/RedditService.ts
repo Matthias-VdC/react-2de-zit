@@ -1,9 +1,9 @@
-import VideoBody from "../components/posts/VideoBody";
-import LinkBody from "../components/posts/LinkBody";
-import ImageBody from "../components/posts/ImageBody";
-import HostedBody from "../components/posts/HostedBody";
+import VideoBody from "../components/headerPosts/VideoBody";
+import LinkBody from "../components/headerPosts/LinkBody";
+import ImageBody from "../components/headerPosts/ImageBody";
+import HostedBody from "../components/headerPosts/HostedBody";
 import subredditDefaultIcon from "../assets/subreddit-default.png";
-import SelfBody from "../components/posts/SelfBody";
+import SelfBody from "../components/headerPosts/SelfBody";
 
 // ☠ this api should be illegal to work with ☠
 
@@ -17,6 +17,9 @@ export default async function fetchData(count: number, limit: number) {
             let afterPost = data.data.after;
             let isUndefined = false;
             console.log("original", data.data);
+            // @ts-ignore: Unreachable code error
+            postData["after"] = afterPost;
+
             for (let i = 0; i < count; i++) {
                 let communityIcon = "";
 
@@ -109,7 +112,7 @@ export default async function fetchData(count: number, limit: number) {
                         time: timeDifference,
                         ups: data.data.children[i].data.ups,
                     }
-                } else if (data.data.children[i].data.post_hint === "hosted:video" || data.data.children[i].data.post_hint === "rich:video") {
+                } else if (data.data.children[i].data.post_hint === "hosted:video") {
                     console.log("hosted:video");
 
                     // get mp3 https://www.reddit.com/r/redditsync/comments/i3pyfx/how_and_where_to_download_just_audio_from_reddit/
@@ -117,43 +120,41 @@ export default async function fetchData(count: number, limit: number) {
 
                     let audio = data.data.children[i].data.secure_media.reddit_video.fallback_url.replace(/\DASH_(.*)/, "DASH_audio.mp4");
 
-                    if (data.data.children[i].data.post_hint === "hosted:video") {
-                        // @ts-ignore: Unreachable code error
-                        postData["post" + i] = {
-                            subreddit: data.data.children[i].data.subreddit,
-                            bodyType: data.data.children[i].data.post_hint,
-                            body: HostedBody,
-                            nr: i,
-                            url: data.data.children[i].data.url,
-                            title: data.data.children[i].data.title,
-                            icon: communityIcon,
-                            author: data.data.children[i].data.author,
-                            time: timeDifference,
-                            video: data.data.children[i].data.secure_media.reddit_video.fallback_url,
-                            audio: audio,
-                            ups: data.data.children[i].data.ups,
-                        }
-                    } else {
-                        let full = data.data.children[i].data.secure_media_embed.content;
-                        let link = full.match(/src="(.*?)"/gm);
-                        // link = link[0].replace(/\bamp;\b/gm, "");
-                        // link = link.replace(/\bsrc="\b/gm, "");
-                        // link = link.slice(0, -1);
-                        // @ts-ignore: Unreachable code error
-                        postData["post" + i] = {
-                            subreddit: data.data.children[i].data.subreddit,
-                            bodyType: data.data.children[i].data.post_hint,
-                            body: HostedBody,
-                            nr: i,
-                            url: data.data.children[i].data.url,
-                            title: data.data.children[i].data.title,
-                            icon: communityIcon,
-                            author: data.data.children[i].data.author,
-                            time: timeDifference,
-                            video: link,
-                            ups: data.data.children[i].data.ups,
-                        }
+                    // @ts-ignore: Unreachable code error
+                    postData["post" + i] = {
+                        subreddit: data.data.children[i].data.subreddit,
+                        bodyType: data.data.children[i].data.post_hint,
+                        body: HostedBody,
+                        nr: i,
+                        url: data.data.children[i].data.url,
+                        title: data.data.children[i].data.title,
+                        icon: communityIcon,
+                        author: data.data.children[i].data.author,
+                        time: timeDifference,
+                        video: data.data.children[i].data.secure_media.reddit_video.fallback_url,
+                        audio: audio,
+                        ups: data.data.children[i].data.ups,
                     }
+                } else if (data.data.children[i].data.post_hint === "rich:video") {
+                    let full = data.data.children[i].data.secure_media_embed.content;
+                    let link = full.match(/src="(.*?)"/gm);
+                    // link = link[0].replace(/\bamp;\b/gm, "");
+                    // link = link.replace(/\bsrc="\b/gm, "");
+                    // link = link.slice(0, -1);
+                    // @ts-ignore: Unreachable code error
+                    postData["post" + i] = {
+                        subreddit: data.data.children[i].data.subreddit,
+                        bodyType: data.data.children[i].data.post_hint,
+                        body: HostedBody,
+                        nr: i,
+                        url: data.data.children[i].data.url,
+                        title: data.data.children[i].data.title,
+                        icon: communityIcon,
+                        author: data.data.children[i].data.author,
+                        time: timeDifference,
+                        video: link,
+                        ups: data.data.children[i].data.ups,
+                    };
                 } else if (data.data.children[i].data.post_hint === "self") {
                     console.log("self");
 

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import Post from "../components/posts/Post";
+import Post from "../components/headerPosts/Post";
 import fetchData from "../services/RedditService";
 import Body from "../components/Body";
 

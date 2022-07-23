@@ -24,6 +24,7 @@ export default function Post(props: any) {
 
   if (!data) return null;
   if (!data.data) return null;
+  if (!data.data.body) return null;
 
   return (
     <>

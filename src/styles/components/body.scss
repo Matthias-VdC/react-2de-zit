@@ -6,7 +6,6 @@
     animation: fadeOutBody 0.35s ease-in-out forwards;
 }
 
-
 @keyframes fadeInBody {
     0% {
         opacity: 0%; 
@@ -26,5 +25,59 @@
     100% {
         opacity: 0%; 
         transform: translateY(0px) scale(80%);
+    }
+}
+
+.center-body{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.bodyPost-container {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid black;
+    margin-top: 50px;
+    width: 85%;
+    max-width: 1500px;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.bodyPost-header {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    background-color: #EFF7FF;
+    height: 50px;
+    
+    img {
+        width: 50px;
+        height: 50px;
+        border-radius: 100%;
+        margin-right: 6px;
+    }
+}
+
+.bodyPost-body {
+    padding: 12px;
+    max-width: 1500px;
+    max-height: 800px;
+    object-fit: contain;
+}
+
+.bodyPost-footer {
+    display: flex;
+    height: 40px;
+    align-items: center;
+    padding: 12px;
+    background-color: #EFF7FF;
+
+    .bodyPost-footer-like-container {
+        display: flex;
+        align-items: center;
+        width: 125px;
+        justify-content: space-between;
     }
 }

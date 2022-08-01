@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import Arrow from "../../assets/Arrow";
+import Share from "../../assets/share";
+import Comment from "../../assets/Comment";
 
 let rows = [];
 
@@ -78,6 +80,22 @@ export default function Post(props: any) {
               }}
               styling="thumbsDown"
             />
+            <Comment />
+            <p>{data.data.comments} Comments</p>
+          </div>
+
+          <div
+            style={{
+              position: "relative",
+              display: "flex",
+              marginRight: "3%",
+            }}
+          >
+            {/* https://www.w3schools.com/css/css_tooltip.asp */}
+            <div className="tooltip">
+              <p className="tooltiptext">Share post</p>
+            </div>
+            <Share />
           </div>
         </div>
       </div>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import fetchData from "../services/RedditService";
-import BodyPost from "./BodyPost";
+import BodyPost from "./bodyPosts/BodyPost";
 
 export default function Body(props: any) {
   const [bodyData, setBodyData] = useState<any>();
@@ -9,7 +9,7 @@ export default function Body(props: any) {
   useEffect(() => {
     (async function fetch() {
       try {
-        const response = await fetchData(5, 5);
+        const response = await fetchData(5, 5, "header");
         console.log("response", response);
         setBodyData(response);
       } catch (e) {
@@ -31,7 +31,7 @@ export default function Body(props: any) {
 
   return (
     <>
-      <div className={props.className}>{postList}</div>
+      <div className={props.className + " center-body"}>{postList}</div>
     </>
   );
 }

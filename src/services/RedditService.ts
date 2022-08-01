@@ -7,8 +7,9 @@ import SelfBody from "../components/headerPosts/SelfBody";
 
 // ☠ this api should be illegal to work with ☠
 
-export default async function fetchData(count: number, limit: number) {
+export default async function fetchData(count: number, limit: number, postType: any) {
     let postData = {};
+
     // @ts-ignore: Unreachable code error
     return (await (async function dataHandler(after: any) {
         let url = `https://www.reddit.com/.json?limit=${limit}&count=${count}&after=${after}`;
@@ -21,6 +22,15 @@ export default async function fetchData(count: number, limit: number) {
             postData["after"] = afterPost;
 
             for (let i = 0; i < count; i++) {
+
+                // SKIPPING ALL UNDEFINED POSTS BECAUSE THEY'RE IMPOSSIBLE TO WORK WITH
+                if (data.data.children[i].data.post_hint === undefined) {
+                    isUndefined = true;
+                    url = url.replace(/(?<=&after=).*$/gm, afterPost);
+                    console.log("undefined", afterPost, url);
+                    return await dataHandler(afterPost);
+                }
+
                 let communityIcon = "";
 
                 // START - Get icons from subreddits
@@ -40,14 +50,6 @@ export default async function fetchData(count: number, limit: number) {
                     }
                 });
                 // END - Get icons from subreddits
-
-                // SKIPPING ALL UNDEFINED POSTS BECAUSE THEY'RE IMPOSSIBLE TO WORK WITH
-                if (data.data.children[i].data.post_hint === undefined) {
-                    isUndefined = true;
-                    url = url.replace(/(?<=&after=).*$/gm, afterPost);
-                    console.log("undefined", afterPost, url);
-                    return await dataHandler(afterPost);
-                }
 
                 // START - Get date difference for posts and convert to seconds/minutes/hours/days/years
                 const dateNow = new Date();
@@ -96,6 +98,7 @@ export default async function fetchData(count: number, limit: number) {
                         link: data.data.children[i].data.url,
                         ups: data.data.children[i].data.ups,
                         title: data.data.children[i].data.title,
+                        comments: data.data.children[i].data.num_comments,
                     }
                 } else if (data.data.children[i].data.post_hint === "image") {
                     console.log("image");
@@ -111,6 +114,7 @@ export default async function fetchData(count: number, limit: number) {
                         author: data.data.children[i].data.author,
                         time: timeDifference,
                         ups: data.data.children[i].data.ups,
+                        comments: data.data.children[i].data.num_comments,
                     }
                 } else if (data.data.children[i].data.post_hint === "hosted:video") {
                     console.log("hosted:video");
@@ -134,6 +138,7 @@ export default async function fetchData(count: number, limit: number) {
                         video: data.data.children[i].data.secure_media.reddit_video.fallback_url,
                         audio: audio,
                         ups: data.data.children[i].data.ups,
+                        comments: data.data.children[i].data.num_comments,
                     }
                 } else if (data.data.children[i].data.post_hint === "rich:video") {
                     let full = data.data.children[i].data.secure_media_embed.content;
@@ -154,6 +159,7 @@ export default async function fetchData(count: number, limit: number) {
                         time: timeDifference,
                         video: link,
                         ups: data.data.children[i].data.ups,
+                        comments: data.data.children[i].data.num_comments,
                     };
                 } else if (data.data.children[i].data.post_hint === "self") {
                     console.log("self");
@@ -170,6 +176,7 @@ export default async function fetchData(count: number, limit: number) {
                         time: timeDifference,
                         ups: data.data.children[i].data.ups,
                         self: data.data.children[i].data.selftext_html,
+                        comments: data.data.children[i].data.num_comments,
                     }
                 } else {
                     console.log("An error has occured with fetching data from reddit.com");

@@ -1,0 +1,61 @@
+@import "../abstract/variables.scss";
+
+.share-button {
+    width: 40px;
+    height: 40px;
+    fill: #5296dd;
+    margin-right: 3%;
+    transition: 0.3s all ease-in-out;
+}
+
+// https://www.w3schools.com/css/css_tooltip.asp
+// modified a bit
+.tooltip {
+    position: absolute;
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    top: 0;
+    left: 0;
+
+    .tooltiptext {
+        visibility: hidden;
+        opacity: 0;
+        width: 120px;
+        background-color: #5296dd;
+        color: white;
+        text-align: center;
+        padding: 5px 0;
+        border-radius: 6px;
+        position: absolute;
+        left: -325%;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 1;
+        transition: 0.35s all ease-in-out;
+
+        &:after {
+            content: " ";
+            position: absolute;
+            top: 50%;
+            left: 100%;
+            margin-top: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: transparent transparent transparent #5296dd;
+        }
+    }
+
+    &:hover {
+        cursor: pointer;
+
+        .tooltiptext {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        & + svg {
+            fill: $uitext;
+        }
+    }
+}

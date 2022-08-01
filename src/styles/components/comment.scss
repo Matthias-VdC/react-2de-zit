@@ -1,0 +1,28 @@
+@import "../abstract/variables.scss";
+
+.footer-comment {
+    width: 40px;
+    height: 40px;
+    fill: #5296dd;
+    margin-left: 1.5em;
+    margin-right: 6px;
+    transition: 0.3s all ease-in-out;
+
+    & + p {
+        cursor: pointer;
+        transition: 0.3s all ease-in-out;
+
+        &:hover {
+            color: $uitext;
+        }
+    }
+
+    &:hover {
+        cursor: pointer;
+        fill: $uitext;
+
+        & + p {
+            color: $uitext;
+        }
+    }
+}

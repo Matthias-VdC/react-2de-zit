@@ -15,34 +15,36 @@
     display: inline-block;
     width: 40px;
     height: 40px;
-    top: 0;
-    left: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 
     .tooltiptext {
         visibility: hidden;
         opacity: 0;
-        width: 120px;
-        background-color: #5296dd;
-        color: white;
+        width: 100px;
+        background-color: white;
+        color: black;
         text-align: center;
         padding: 5px 0;
-        border-radius: 6px;
+        border-radius: 4px;
         position: absolute;
-        left: -325%;
-        top: 50%;
-        transform: translateY(-50%);
+        left: -80%;
+        top: -100%;
         z-index: 1;
         transition: 0.35s all ease-in-out;
+        user-select: none;
+        border: 1px solid #5296dd;
 
         &:after {
             content: " ";
             position: absolute;
-            top: 50%;
-            left: 100%;
-            margin-top: -5px;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
             border-width: 5px;
             border-style: solid;
-            border-color: transparent transparent transparent #5296dd;
+            border-color: #5296dd transparent transparent transparent;
         }
     }
 

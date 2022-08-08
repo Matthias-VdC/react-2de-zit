@@ -7,12 +7,20 @@ import SelfBody from "../components/headerPosts/SelfBody";
 
 // ☠ this api should be illegal to work with ☠
 
-export default async function fetchData(count: number, limit: number, postType: any) {
+export default async function fetchData(count: number, limit: number, next: any, from: any) {
     let postData = {};
 
     // @ts-ignore: Unreachable code error
     return (await (async function dataHandler(after: any) {
+        if (next !== undefined && !after) {
+            after = next;
+        }
+
+        console.log('after', after);
+
         let url = `https://www.reddit.com/.json?limit=${limit}&count=${count}&after=${after}`;
+
+        console.log(url);
         // @ts-ignore: Unreachable code error
         return (await fetch(url).then(response => response.json()).then(async data => {
             let afterPost = data.data.after;
@@ -20,6 +28,8 @@ export default async function fetchData(count: number, limit: number, postType: 
             console.log("original", data.data);
             // @ts-ignore: Unreachable code error
             postData["after"] = afterPost;
+
+            let postCount = from;
 
             for (let i = 0; i < count; i++) {
 
@@ -76,6 +86,10 @@ export default async function fetchData(count: number, limit: number, postType: 
                 }
                 // END - Get all date differences
 
+                let isover18: boolean;
+
+                if (data.data.children[i].data.over_18) { isover18 = true } else { isover18 = false }
+
 
                 // START - Sort all data to make it usable
                 if (data.data.children[i].data.post_hint === "link") {
@@ -86,7 +100,7 @@ export default async function fetchData(count: number, limit: number, postType: 
 
                     // https://stackoverflow.com/questions/43618878/how-to-disable-a-ts-rule-for-a-specific-line
                     // @ts-ignore: Unreachable code error
-                    postData["post" + i] = {
+                    postData["post" + postCount] = {
                         subreddit: data.data.children[i].data.subreddit,
                         bodyType: data.data.children[i].data.post_hint,
                         body: LinkBody,
@@ -99,11 +113,12 @@ export default async function fetchData(count: number, limit: number, postType: 
                         ups: data.data.children[i].data.ups,
                         title: data.data.children[i].data.title,
                         comments: data.data.children[i].data.num_comments,
+                        over18: isover18,
                     }
                 } else if (data.data.children[i].data.post_hint === "image") {
                     console.log("image");
                     // @ts-ignore: Unreachable code error
-                    postData["post" + i] = {
+                    postData["post" + postCount] = {
                         subreddit: data.data.children[i].data.subreddit,
                         bodyType: data.data.children[i].data.post_hint,
                         body: ImageBody,
@@ -115,6 +130,7 @@ export default async function fetchData(count: number, limit: number, postType: 
                         time: timeDifference,
                         ups: data.data.children[i].data.ups,
                         comments: data.data.children[i].data.num_comments,
+                        over18: isover18,
                     }
                 } else if (data.data.children[i].data.post_hint === "hosted:video") {
                     console.log("hosted:video");
@@ -125,7 +141,7 @@ export default async function fetchData(count: number, limit: number, postType: 
                     let audio = data.data.children[i].data.secure_media.reddit_video.fallback_url.replace(/\DASH_(.*)/, "DASH_audio.mp4");
 
                     // @ts-ignore: Unreachable code error
-                    postData["post" + i] = {
+                    postData["post" + postCount] = {
                         subreddit: data.data.children[i].data.subreddit,
                         bodyType: data.data.children[i].data.post_hint,
                         body: HostedBody,
@@ -139,6 +155,7 @@ export default async function fetchData(count: number, limit: number, postType: 
                         audio: audio,
                         ups: data.data.children[i].data.ups,
                         comments: data.data.children[i].data.num_comments,
+                        over18: isover18,
                     }
                 } else if (data.data.children[i].data.post_hint === "rich:video") {
                     let full = data.data.children[i].data.secure_media_embed.content;
@@ -147,7 +164,7 @@ export default async function fetchData(count: number, limit: number, postType: 
                     // link = link.replace(/\bsrc="\b/gm, "");
                     // link = link.slice(0, -1);
                     // @ts-ignore: Unreachable code error
-                    postData["post" + i] = {
+                    postData["post" + postCount] = {
                         subreddit: data.data.children[i].data.subreddit,
                         bodyType: data.data.children[i].data.post_hint,
                         body: HostedBody,
@@ -160,12 +177,13 @@ export default async function fetchData(count: number, limit: number, postType: 
                         video: link,
                         ups: data.data.children[i].data.ups,
                         comments: data.data.children[i].data.num_comments,
+                        over18: isover18,
                     };
                 } else if (data.data.children[i].data.post_hint === "self") {
                     console.log("self");
 
                     // @ts-ignore: Unreachable code error
-                    postData["post" + i] = {
+                    postData["post" + postCount] = {
                         subreddit: data.data.children[i].data.subreddit,
                         bodyType: data.data.children[i].data.post_hint,
                         body: SelfBody,
@@ -177,13 +195,17 @@ export default async function fetchData(count: number, limit: number, postType: 
                         ups: data.data.children[i].data.ups,
                         self: data.data.children[i].data.selftext_html,
                         comments: data.data.children[i].data.num_comments,
+                        over18: isover18,
                     }
                 } else {
                     console.log("An error has occured with fetching data from reddit.com");
                 }
+                console.log("postcount", postCount);
+                postCount = postCount + 1;
+                // @ts-ignore: Unreachable code error
+                postData["last"] = postCount;
             }
             // END - Added all used data to postData
-            console.log(postData);
             if (!isUndefined) return postData; else return await dataHandler(afterPost);
         }));
     })(""));

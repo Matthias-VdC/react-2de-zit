@@ -1,19 +1,25 @@
 import { useEffect, useState } from "react";
 import Arrow from "../../assets/Arrow";
+import Share from "../../assets/share";
+import Comment from "../../assets/Comment";
+import Dotdotdot from "../Dotdotdot";
 
 export default function BodyPost(props: any) {
   const [upvotes, setUpvotes] = useState<any>();
   const [thumbsUpClick, setUpClick] = useState("");
   const [thumbsDownClick, setDownClick] = useState("");
+  const [over18, setOver18] = useState(false);
   let data = props.data;
-  console.log(data);
 
   useEffect(() => {
     if (data.ups > 1000) {
       // https://bobbyhadz.com/blog/javascript-round-number-to-1-decimal-place
       setUpvotes((data.ups / 1000).toFixed(1));
     }
-  }, [data.ups]);
+    if (data.over18) {
+      setOver18(true);
+    }
+  }, [data.over18, data.ups]);
   if (!data) return <></>;
   if (!data.body) return <></>;
   return (
@@ -23,18 +29,25 @@ export default function BodyPost(props: any) {
           <img src={data.icon} alt="" />
           <div>
             <div>
-              <p>r/{data.subreddit}</p>
+              <p className="subreddit-text">r/{data.subreddit}</p>
             </div>
             <div>
-              <p>
+              <p className="subreddit-user">
                 Posted by u/{data.author} • {data.time} ago
               </p>
             </div>
           </div>
+          <Dotdotdot />
         </div>
 
         <div className="bodyPost-body">
-          <data.body data={props}></data.body>
+          {over18 ? (
+            <div className="over18">
+              <p>nsfw</p>
+            </div>
+          ) : (
+            <data.body data={props}></data.body>
+          )}
         </div>
         <div className="bodyPost-footer">
           <div className="bodyPost-footer-like-container">
@@ -70,6 +83,29 @@ export default function BodyPost(props: any) {
               }}
               styling="thumbsDown"
             />
+          </div>
+
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "flex-end",
+              width: "100%",
+            }}
+          >
+            {/* https://www.w3schools.com/css/css_tooltip.asp */}
+            <div style={{ position: "relative" }}>
+              <div className="tooltip">
+                <p className="tooltiptext">Share post</p>
+              </div>
+              <Share />
+            </div>
+
+            <div style={{ position: "relative" }}>
+              <div className="tooltip">
+                <p className="tooltiptext">Comment</p>
+              </div>
+              <Comment />
+            </div>
           </div>
         </div>
       </div>

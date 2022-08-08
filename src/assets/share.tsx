@@ -11,7 +11,6 @@ export default function Share() {
       x="0px"
       y="0px"
       viewBox="0 0 481.6 481.6"
-      style={{}}
       className={`share-button ${click}`}
     >
       <g>

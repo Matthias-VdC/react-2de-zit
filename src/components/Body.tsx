@@ -5,6 +5,8 @@ import BodyPost from "./bodyPosts/BodyPost";
 export default function Body(props: any) {
   const [bodyData, setBodyData] = useState<any>();
   const [postList, setPostList] = useState<any>([]);
+  const [loading, setLoading] = useState<any>();
+  const [loadingVisibility, setLoadingVisibility] = useState<any>("none");
 
   async function fetcher(next: any, nr: any) {
     try {
@@ -33,6 +35,7 @@ export default function Body(props: any) {
   }, []);
 
   useEffect(() => {
+    // Delay to wait for initial api load since it can be slow
     setTimeout(() => {
       let root = document.getElementById("root");
 
@@ -40,6 +43,7 @@ export default function Body(props: any) {
         // - 550 for header animation difference & 409 for buffer for bottom of page
         // console.log(window.scrollY, root!.scrollHeight - 550 - 409);
         if (window.scrollY >= root!.scrollHeight - 550 - 409) {
+          setLoadingVisibility("inline-block");
           window.scrollTo({
             top: root!.scrollHeight - 550 - 850,
             behavior: "smooth",
@@ -62,9 +66,28 @@ export default function Body(props: any) {
     }
   }, [bodyData]);
 
+  useEffect(() => {
+    setLoading(
+      <div className="lds-ring" style={{ display: loadingVisibility }}>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    );
+  }, [bodyData, loadingVisibility, postList]);
+
+  useEffect(() => {
+    setLoadingVisibility("none");
+  }, [postList]);
+
   return (
     <>
-      <div className={props.className + " center-body"}>{postList}</div>
+      <div className={props.className + " center-body"}>
+        {postList}
+        {/* https://loading.io/css/ */}
+        {loading}
+      </div>
     </>
   );
 }

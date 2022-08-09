@@ -7,7 +7,6 @@ export default function HostedBody(props) {
   const [videoControls, setVideoControls] = useState(true);
 
   useEffect(() => {
-
     // https://stackoverflow.com/questions/6433900/syncing-html5-video-with-audio-playback
 
     var vid = document.getElementById(`video${props.data.data.nr}`);
@@ -49,6 +48,7 @@ export default function HostedBody(props) {
           id={"video" + props.data.data.nr}
           className="post-body-hosted-video"
           src={props.data.data.video}
+          controls
         >
           <source src={props.data.data.video} type="video/mp4" />
         </video>

@@ -72,13 +72,11 @@
 
 .post-body-containers {
     display: flex;
-    overflow: hidden;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     text-align: center;
     max-height: 100%;
     width: 100%;
     height: 100%;
-    overflow-wrap: break-word;
 
     div {
         display: flex;
@@ -180,7 +178,7 @@
 }
 
 .post-body-hosted-video {
-    height: 100%;
+    height: 80%;
     width: auto;
     max-width: 100%;
     object-fit: contain;

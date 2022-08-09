@@ -3,12 +3,14 @@ import Arrow from "../../assets/Arrow";
 import Share from "../../assets/share";
 import Comment from "../../assets/Comment";
 import Dotdotdot from "../Dotdotdot";
+import { relative } from "path";
 
 export default function BodyPost(props: any) {
   const [upvotes, setUpvotes] = useState<any>();
   const [thumbsUpClick, setUpClick] = useState("");
   const [thumbsDownClick, setDownClick] = useState("");
   const [over18, setOver18] = useState(false);
+  const [buttonDownTime, setButtonDownTime] = useState<any>(0);
   let data = props.data;
 
   useEffect(() => {
@@ -42,8 +44,37 @@ export default function BodyPost(props: any) {
 
         <div className="bodyPost-body">
           {over18 ? (
-            <div style={{ height: "400px" }} className="over18">
-              <p>nsfw</p>
+            <div style={{ position: "relative" }}>
+              <div
+                style={{
+                  height: "400px",
+                  filter: "blur(30px)",
+                  position: "relative",
+                }}
+                className="over18"
+              >
+                <data.body data={props}></data.body>
+              </div>
+              <p
+                className="show-nsfw"
+                onMouseDown={(e) => {
+                  setButtonDownTime(e.timeStamp);
+                }}
+                onMouseUp={(e) => {
+                  let duration = (buttonDownTime - e.timeStamp) / 1000;
+                  duration = duration * -1;
+                  console.log(duration);
+                  if (duration > 0.8) {
+                    // @ts-ignore: Unreachable code error
+                    e.currentTarget.parentNode.firstElementChild.style.filter =
+                      "";
+                    e.currentTarget.style.display = "none";
+                  }
+                  setButtonDownTime(0);
+                }}
+              >
+                Hold to show NSFW
+              </p>
             </div>
           ) : (
             <data.body data={props}></data.body>

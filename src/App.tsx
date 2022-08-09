@@ -9,10 +9,10 @@ function App() {
       <Route
         path="/"
         element={
-          <div>
+          <>
             <Header />
             <Home />
-          </div>
+          </>
         }
       />
       <Route path="/test" element={<p>TESTING</p>} />

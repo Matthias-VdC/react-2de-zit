@@ -1,13 +1,22 @@
 import React from "react";
+import { Link, Route, Router, Routes } from "react-router-dom";
 import Header from "./components/Header";
 import Home from "./pages/Home.page";
 
 function App() {
   return (
-    <div>
-      <Header />
-      <Home />
-    </div>
+    <Routes>
+      <Route
+        path="/"
+        element={
+          <div>
+            <Header />
+            <Home />
+          </div>
+        }
+      />
+      <Route path="/test" element={<p>TESTING</p>} />
+    </Routes>
   );
 }
 

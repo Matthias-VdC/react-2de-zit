@@ -35,17 +35,6 @@
         transition: 0.35s all ease-in-out;
         user-select: none;
         border: 1px solid #5296dd;
-
-        &:after {
-            content: " ";
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            margin-left: -5px;
-            border-width: 5px;
-            border-style: solid;
-            border-color: #5296dd transparent transparent transparent;
-        }
     }
 
     &:hover {

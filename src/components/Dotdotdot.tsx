@@ -19,7 +19,14 @@ export default function Dotdotdot() {
     >
       <p className="dotdotdot">•••</p>
       <div className={"dotdotdot-dropdown " + click}>
-        <div className="dotdotdot-dropdown-section">
+        <div
+          className="dotdotdot-dropdown-section"
+          onClick={(e) => {
+            // @ts-ignore: Unreachable code error
+            e.currentTarget.parentNode.parentNode.parentNode.parentNode.style.display =
+              "none";
+          }}
+        >
           <Hide />
           <p>Hide</p>
         </div>

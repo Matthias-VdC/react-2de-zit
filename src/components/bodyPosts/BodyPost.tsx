@@ -42,7 +42,7 @@ export default function BodyPost(props: any) {
 
         <div className="bodyPost-body">
           {over18 ? (
-            <div className="over18">
+            <div style={{ height: "400px" }} className="over18">
               <p>nsfw</p>
             </div>
           ) : (

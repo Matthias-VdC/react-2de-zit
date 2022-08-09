@@ -78,6 +78,19 @@
     }
 }
 
+.audio-controls-container {
+    margin-top: -40px;
+    width: 50%;
+    z-index: 999999;
+}
+
+.audio-controls {
+    width: 100%;
+}
+audio::-webkit-media-controls{
+    display: none;
+}
+
 @keyframes fadeOutBody {
     0% {
         opacity: 100%;
@@ -174,6 +187,7 @@
     max-height: 800px;
     object-fit: contain;
     background-color: white;
+    overflow: scroll;
 
     .post-body-containers div p:first-child {
         margin-bottom: 1em;

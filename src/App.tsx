@@ -1,5 +1,6 @@
 import React from "react";
-import { Link, Route, Router, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
+import Comments from "./components/Comments";
 import Header from "./components/Header";
 import Home from "./pages/Home.page";
 
@@ -15,7 +16,15 @@ function App() {
           </>
         }
       />
-      <Route path="/test" element={<p>TESTING</p>} />
+      <Route
+        path="/post/:id"
+        element={
+          <>
+            <Header />
+            <Comments />
+          </>
+        }
+      />
     </Routes>
   );
 }

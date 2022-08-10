@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Arrow from "../../assets/Arrow";
 import Share from "../../assets/share";
 import Comment from "../../assets/Comment";
 import Dotdotdot from "../Dotdotdot";
 import { relative } from "path";
+import { useNavigate } from "react-router-dom";
 
 export default function BodyPost(props: any) {
   const [upvotes, setUpvotes] = useState<any>();
@@ -12,6 +13,13 @@ export default function BodyPost(props: any) {
   const [over18, setOver18] = useState(false);
   const [buttonDownTime, setButtonDownTime] = useState<any>(0);
   let data = props.data;
+
+  // https://stackoverflow.com/questions/29244731/react-router-how-to-manually-invoke-link
+  const navigate = useNavigate();
+  const handleOnClick = useCallback(
+    () => navigate("/post/" + data.id, { replace: true }),
+    [navigate]
+  );
 
   useEffect(() => {
     if (data.ups > 1000) {
@@ -42,7 +50,12 @@ export default function BodyPost(props: any) {
           <Dotdotdot />
         </div>
 
-        <div className="bodyPost-body">
+        <div
+          className="bodyPost-body"
+          onClick={async () => {
+            await handleOnClick();
+          }}
+        >
           {over18 ? (
             <div style={{ position: "relative" }}>
               <div

@@ -11,7 +11,7 @@ export default function Header() {
   // hovered src: https://www.reddit.com/r/threejs/comments/l63kgm/change_mouse_to_pointer_on_hover_with_react_three/
 
   useEffect(() => {
-    window.addEventListener("scroll", (e) => {
+    document.addEventListener("scroll", (e) => {
       if (window.scrollY === 0) {
         setHeader("header");
         setBottomScroll("header-bottom");

@@ -11,8 +11,6 @@ export default function Home() {
   const [bodyData, setBodyData] = useState<any>([]);
 
   useEffect(() => {
-    let root = document.getElementById("root");
-
     (async function fetch() {
       try {
         // undefined wrong but works so I won't bother to fix it until it becomes a problem :)
@@ -24,7 +22,7 @@ export default function Home() {
       }
     })();
 
-    window.addEventListener("scroll", () => {
+    document.addEventListener("scroll", () => {
       if (window.pageYOffset !== 0) {
         setScrollState("scrollOut");
         setScrollStateBody("scrollInBody");
@@ -32,15 +30,6 @@ export default function Home() {
         setScrollState("scrollIn");
         setScrollStateBody("scrollOutBody");
       }
-      // if (window.innerHeight + window.scrollY >= root!.offsetHeight) {
-      //   // you're at the bottom of the page
-      //   setBodyData((current: any) => [
-      //     ...current,
-      //     <Body className={scrollStateBody} />,
-      //   ]);
-      //   document.body.scrollTo(0, 200);
-      //   root = document.getElementById("root");
-      // }
     });
   }, []);
   // Empty array makes it so that useEffect triggers only on first page mount
@@ -56,8 +45,6 @@ export default function Home() {
     }
   }, [postData]);
   // Update on every change of postData
-
-  useEffect(() => {}, [bodyData]);
 
   if (!postData) return null;
 

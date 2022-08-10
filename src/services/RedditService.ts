@@ -114,6 +114,7 @@ export default async function fetchData(count: number, limit: number, next: any,
                         title: data.data.children[i].data.title,
                         comments: data.data.children[i].data.num_comments,
                         over18: isover18,
+                        id: data.data.children[i].data.id,
                     }
                 } else if (data.data.children[i].data.post_hint === "image") {
                     console.log("image");
@@ -131,6 +132,7 @@ export default async function fetchData(count: number, limit: number, next: any,
                         ups: data.data.children[i].data.ups,
                         comments: data.data.children[i].data.num_comments,
                         over18: isover18,
+                        id: data.data.children[i].data.id,
                     }
                 } else if (data.data.children[i].data.post_hint === "hosted:video") {
                     console.log("hosted:video");
@@ -156,6 +158,7 @@ export default async function fetchData(count: number, limit: number, next: any,
                         ups: data.data.children[i].data.ups,
                         comments: data.data.children[i].data.num_comments,
                         over18: isover18,
+                        id: data.data.children[i].data.id,
                     }
                 } else if (data.data.children[i].data.post_hint === "rich:video") {
                     let full = data.data.children[i].data.secure_media_embed.content;
@@ -178,6 +181,7 @@ export default async function fetchData(count: number, limit: number, next: any,
                         ups: data.data.children[i].data.ups,
                         comments: data.data.children[i].data.num_comments,
                         over18: isover18,
+                        id: data.data.children[i].data.id,
                     };
                 } else if (data.data.children[i].data.post_hint === "self") {
                     console.log("self");
@@ -196,6 +200,7 @@ export default async function fetchData(count: number, limit: number, next: any,
                         self: data.data.children[i].data.selftext_html,
                         comments: data.data.children[i].data.num_comments,
                         over18: isover18,
+                        id: data.data.children[i].data.id,
                     }
                 } else {
                     console.log("An error has occured with fetching data from reddit.com");

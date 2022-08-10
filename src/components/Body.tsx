@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import fetchData from "../services/RedditService";
 import BodyPost from "./bodyPosts/BodyPost";
 
@@ -19,10 +19,10 @@ export default function Body(props: any) {
       }
 
       if (bodyData) {
-        console.log("response", Object.assign(bodyData, response));
+        // console.log("response", Object.assign(bodyData, response));
         setBodyData(Object.assign(bodyData, response));
       } else {
-        console.log("response", response);
+        // console.log("response", response);
         setBodyData(response);
       }
     } catch (e) {
@@ -35,25 +35,26 @@ export default function Body(props: any) {
   }, []);
 
   useEffect(() => {
+    const event = () => {
+      let root = document.getElementById("root");
+      // - 550 for header animation difference & 409 for buffer for bottom of page
+      // console.log(window.scrollY, root!.scrollHeight - 550 - 409);
+      if (window.scrollY >= root!.scrollHeight - 550 - 409) {
+        window.scrollTo({
+          top: root!.scrollHeight - 550 - 850,
+          behavior: "smooth",
+        });
+        if (bodyData && loadingVisibility === "none") {
+          setLoadingVisibility("inline-block");
+          fetcher(bodyData.after, Object.keys(bodyData).length - 2);
+          console.log("FETCHING");
+        }
+      }
+    };
+
     // Delay to wait for initial api load since it can be slow
     setTimeout(() => {
-      let root = document.getElementById("root");
-
-      document.addEventListener("scroll", (e) => {
-        // - 550 for header animation difference & 409 for buffer for bottom of page
-        // console.log(window.scrollY, root!.scrollHeight - 550 - 409);
-        if (window.scrollY >= root!.scrollHeight - 550 - 409) {
-          setLoadingVisibility("inline-block");
-          window.scrollTo({
-            top: root!.scrollHeight - 550 - 850,
-            behavior: "smooth",
-          });
-
-          if (bodyData) {
-            fetcher(bodyData.after, Object.keys(bodyData).length - 2);
-          }
-        }
-      });
+      document.addEventListener("scroll", event, false);
     }, 5000);
 
     setPostList([]);

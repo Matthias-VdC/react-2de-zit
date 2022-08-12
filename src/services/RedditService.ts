@@ -221,6 +221,8 @@ export default async function fetchData(count: number, limit: number, next: any,
             }
             // END - Added all used data to postData
             if (!isUndefined) return postData; else return await dataHandler(afterPost);
-        }));
+        }
+        ));
+
     })(""));
 }

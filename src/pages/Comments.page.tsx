@@ -4,17 +4,19 @@ import Arrow from "../assets/Arrow";
 import Dotdotdot from "../components/Dotdotdot";
 import fetchData from "../services/RedditService";
 import Comment from "../assets/Comment";
+import defaultLogo from "../assets/subreddit-default.png";
 
 export default function Comments() {
   // https://v5.reactrouter.com/web/example/url-params
   let { id } = useParams();
   const navigate = useNavigate();
   const [data, setData] = useState<any>();
-  const [messages, setMessages] = useState<any>();
-  const [messageBody, setMessageBody] = useState<any>([]);
+  const [messages, setMessages] = useState<any>([]);
   const [thumbsUpClick, setUpClick] = useState("");
   const [thumbsDownClick, setDownClick] = useState("");
   const [upvotes, setUpvotes] = useState<any>();
+  const [user, setUser] = useState<any>([]);
+  const [fetchUser, setFetchUser] = useState<any>(false);
 
   useEffect(() => {
     // Fix eventlisteners on html tag persisting through pages
@@ -38,29 +40,87 @@ export default function Comments() {
         setUpvotes((data.post1.ups / 1000).toFixed(1));
       }
       (async function fetchComments() {
-        await fetch(`https://api.reddit.com/${id}/.json`)
+        await fetch(`https://www.reddit.com/${id}/.json`)
           .then((response) => response.json())
           .then((data) => {
             setMessages(data[1].data.children);
+          })
+          .finally(() => {
+            setFetchUser(true);
           });
       })();
     }
   }, [data, id]);
 
-  useEffect(() => {
-    if (messages) {
-      console.log(messages);
-      for (let i = 0; i < messages.length - 1; i++) {
-        setMessageBody((prevState: any) => ({
-          ...[prevState, [messages[i].data.body_html]],
-        }));
+  function decodeHtml(html: any) {
+    var txt = document.createElement("textarea");
+    txt.innerHTML = html;
+    let newValue = txt.value.replace(/(.*?<!-- SC_OFF -->)/, "");
+    newValue = newValue.replace(/(.*?<!-- SC_ON -->)/, "");
+    let removeComma = newValue.replace(/(?<=\>)(,)(?=\<)/gm, "");
+    return removeComma;
+  }
+
+  function MessageBody() {
+    const row: JSX.Element[] = [];
+
+    console.log(user);
+
+    if (user.length) {
+      // console.log(user, messages);
+      let filtered;
+      for (let i = 0; i < messages.length; i++) {
+        if (user[i]) {
+          if (user[i].icon_img) {
+            filtered = user[i].icon_img;
+            filtered = filtered.replace(/\bamp;\b/gm, "");
+          } else if (user[i].snoovatar_img) {
+            filtered = user[i].snoovatar_img;
+          } else {
+            filtered = defaultLogo;
+          }
+        }
+
+        row.push(
+          <div
+            key={messages[i].data.id}
+            style={{ marginTop: "24px", width: "100%" }}
+          >
+            <div style={{ display: "flex" }}>
+              <img
+                style={{ borderRadius: "100%", width: "50px", height: "50px" }}
+                src={filtered}
+                alt=""
+              />
+              <p>{messages[i].data.author}</p>
+            </div>
+            <div
+              dangerouslySetInnerHTML={{
+                __html: decodeHtml(messages[i].data.body_html),
+              }}
+            ></div>
+          </div>
+        );
       }
     }
-  }, [messages]);
+
+    return <>{row}</>;
+  }
 
   useEffect(() => {
-    console.log(messageBody);
-  }, [messageBody]);
+    (async function test() {
+      for (let i = 0; i < messages.length; i++) {
+        await fetch(
+          `https://www.reddit.com/user/${messages[i].data.author}/about.json`
+        )
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data);
+            setUser((prevState: any) => [...prevState, data.data]);
+          });
+      }
+    })();
+  }, [fetchUser]);
 
   if (!data) return null;
   if (!data.post1.body) return null;
@@ -78,49 +138,49 @@ export default function Comments() {
           backgroundColor: "rgba(0,0,0,0.3)",
         }}
       ></div>
-      <div className="comments-page-header-sticky">
-        <div className="comments-footer-like-container">
-          <Arrow
-            clickValue={thumbsUpClick}
-            onClick={() => {
-              if (thumbsDownClick) {
-                setUpClick("thumbsUpClick");
-                setDownClick("");
-              } else if (!thumbsDownClick && !thumbsUpClick) {
-                setUpClick("thumbsUpClick");
-              } else {
-                setDownClick("");
-                setUpClick("");
-              }
-            }}
-            styling="thumbsUp"
-          />
-          <p style={{ userSelect: "none" }}>{upvotes}k</p>
-          <Arrow
-            clickValue={thumbsDownClick}
-            onClick={() => {
-              if (thumbsUpClick) {
-                setDownClick("thumbsDownClick");
-                setUpClick("");
-              } else if (!thumbsDownClick && !thumbsUpClick) {
-                setDownClick("thumbsDownClick");
-              } else {
-                setDownClick("");
-                setUpClick("");
-              }
-            }}
-            styling="thumbsDown"
-          />
-        </div>
-        <button
-          onClick={() => {
-            navigate("/", { replace: true });
-          }}
-        >
-          close
-        </button>
-      </div>
       <div className="comments-page-container">
+        <div className="comments-page-header-sticky">
+          <div className="comments-footer-like-container">
+            <Arrow
+              clickValue={thumbsUpClick}
+              onClick={() => {
+                if (thumbsDownClick) {
+                  setUpClick("thumbsUpClick");
+                  setDownClick("");
+                } else if (!thumbsDownClick && !thumbsUpClick) {
+                  setUpClick("thumbsUpClick");
+                } else {
+                  setDownClick("");
+                  setUpClick("");
+                }
+              }}
+              styling="thumbsUp"
+            />
+            <p style={{ userSelect: "none" }}>{upvotes}k</p>
+            <Arrow
+              clickValue={thumbsDownClick}
+              onClick={() => {
+                if (thumbsUpClick) {
+                  setDownClick("thumbsDownClick");
+                  setUpClick("");
+                } else if (!thumbsDownClick && !thumbsUpClick) {
+                  setDownClick("thumbsDownClick");
+                } else {
+                  setDownClick("");
+                  setUpClick("");
+                }
+              }}
+              styling="thumbsDown"
+            />
+          </div>
+          <button
+            onClick={() => {
+              navigate("/", { replace: true });
+            }}
+          >
+            close
+          </button>
+        </div>
         <div
           style={{
             backgroundColor: "transparent",
@@ -143,7 +203,7 @@ export default function Comments() {
           </div>
         </div>
         <data.post1.body data={{ data: data.post1 }}></data.post1.body>
-        <div dangerouslySetInnerHTML={{ __html: messageBody[1] }} />
+        <MessageBody />
       </div>
     </div>
   );

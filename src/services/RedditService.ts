@@ -16,7 +16,6 @@ export default async function fetchData(count: number, limit: number, next: any,
             after = next;
         }
 
-        console.log('after', after);
 
         let url = `https://www.reddit.com/.json?limit=${limit}&count=${count}&after=${after}`;
 
@@ -24,17 +23,14 @@ export default async function fetchData(count: number, limit: number, next: any,
             url = `https://www.reddit.com/${specific}.json`;
         }
 
-        console.log(url);
         // @ts-ignore: Unreachable code error
         return (await fetch(url).then(response => response.json()).then(async data => {
             let d = data.data;
             if (specific) {
-                console.log(data);
                 d = data[0].data;
             }
             let afterPost = d.after;
             let isUndefined = false;
-            console.log("original", d);
             // @ts-ignore: Unreachable code error
             postData["after"] = afterPost;
 
@@ -102,7 +98,6 @@ export default async function fetchData(count: number, limit: number, next: any,
 
                 // START - Sort all data to make it usable
                 if (d.children[i].data.post_hint === "link") {
-                    console.log("link");
                     // help again for another link (same issue with amp;) https://www.reddit.com/r/redditdev/comments/9ncg2r/deleted_by_user/
                     let image = d.children[i].data.preview.images[0].source.url;
                     image = image.replace(/\bamp;\b/gm, "");
@@ -126,7 +121,6 @@ export default async function fetchData(count: number, limit: number, next: any,
                         id: d.children[i].data.id,
                     }
                 } else if (d.children[i].data.post_hint === "image") {
-                    console.log("image");
                     // @ts-ignore: Unreachable code error
                     postData["post" + postCount] = {
                         subreddit: d.children[i].data.subreddit,
@@ -144,7 +138,6 @@ export default async function fetchData(count: number, limit: number, next: any,
                         id: d.children[i].data.id,
                     }
                 } else if (d.children[i].data.post_hint === "hosted:video") {
-                    console.log("hosted:video");
 
                     // get mp3 https://www.reddit.com/r/redditsync/comments/i3pyfx/how_and_where_to_download_just_audio_from_reddit/
 
@@ -193,7 +186,6 @@ export default async function fetchData(count: number, limit: number, next: any,
                         id: d.children[i].data.id,
                     };
                 } else if (d.children[i].data.post_hint === "self") {
-                    console.log("self");
 
                     // @ts-ignore: Unreachable code error
                     postData["post" + postCount] = {
@@ -214,7 +206,6 @@ export default async function fetchData(count: number, limit: number, next: any,
                 } else {
                     console.log("An error has occured with fetching data from reddit.com");
                 }
-                console.log("postcount", postCount);
                 postCount = postCount + 1;
                 // @ts-ignore: Unreachable code error
                 postData["last"] = postCount;

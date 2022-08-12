@@ -17,6 +17,7 @@ export default function Comments() {
   const [upvotes, setUpvotes] = useState<any>();
   const [user, setUser] = useState<any>([]);
   const [fetchUser, setFetchUser] = useState<any>(false);
+  const [fetchComments, setFetchComments] = useState<any>(false);
 
   useEffect(() => {
     // Fix eventlisteners on html tag persisting through pages
@@ -30,7 +31,9 @@ export default function Comments() {
     (async function fetcher() {
       const postFetch = await fetchData(1, 1, undefined, 1, id);
       setData(postFetch);
-    })();
+    })().finally(() => {
+      setFetchComments(true);
+    });
   }, [id]);
 
   useEffect(() => {
@@ -50,7 +53,22 @@ export default function Comments() {
           });
       })();
     }
-  }, [data, id]);
+  }, [fetchComments]);
+
+  useEffect(() => {
+    (async function test() {
+      for (let i = 0; i < messages.length; i++) {
+        await fetch(
+          `https://www.reddit.com/user/${messages[i].data.author}/about.json`
+        )
+          .then((response) => response.json())
+          // eslint-disable-next-line no-loop-func
+          .then((data) => {
+            setUser((prevState: any) => [...prevState, data.data]);
+          });
+      }
+    })();
+  }, [fetchUser]);
 
   function decodeHtml(html: any) {
     var txt = document.createElement("textarea");
@@ -64,63 +82,112 @@ export default function Comments() {
   function MessageBody() {
     const row: JSX.Element[] = [];
 
-    console.log(user);
-
-    if (user.length) {
-      // console.log(user, messages);
-      let filtered;
-      for (let i = 0; i < messages.length; i++) {
-        if (user[i]) {
-          if (user[i].icon_img) {
-            filtered = user[i].icon_img;
-            filtered = filtered.replace(/\bamp;\b/gm, "");
-          } else if (user[i].snoovatar_img) {
-            filtered = user[i].snoovatar_img;
-          } else {
-            filtered = defaultLogo;
-          }
+    let filtered;
+    for (let i = 0; i < messages.length - 1; i++) {
+      if (user[i]) {
+        if (user[i].icon_img) {
+          filtered = user[i].icon_img;
+          filtered = filtered.replace(/\bamp;\b/gm, "");
+        } else if (user[i].snoovatar_img) {
+          filtered = user[i].snoovatar_img;
+        } else {
+          filtered = defaultLogo;
         }
+      }
 
-        row.push(
-          <div
-            key={messages[i].data.id}
-            style={{ marginTop: "24px", width: "100%" }}
-          >
-            <div style={{ display: "flex" }}>
-              <img
-                style={{ borderRadius: "100%", width: "50px", height: "50px" }}
-                src={filtered}
-                alt=""
-              />
-              <p>{messages[i].data.author}</p>
+      const dateNow = new Date();
+      // https://stackoverflow.com/questions/44861119/convert-reddits-created-unix-timestamp-to-readable-date
+      let datePost = new Date(messages[i].data.created * 1000);
+      let seconds = Math.floor((datePost.getTime() - dateNow.getTime()) / 1000);
+      // https://stackoverflow.com/questions/4652104/convert-a-negative-number-to-a-positive-one-in-javascript
+      seconds = Math.abs(seconds);
+      let timeDifference = "";
+
+      if (seconds < 60) {
+        timeDifference = `${seconds} seconds`;
+      } else if (seconds > 60 && seconds < 3600) {
+        // https://stackoverflow.com/questions/37096367/how-to-convert-seconds-to-minutes-and-hours-in-javascript
+        timeDifference = `${Math.floor((seconds % 3600) / 60)} minutes`;
+      } else if (seconds > 3600 && seconds < 86400) {
+        timeDifference = `${Math.floor(seconds / 3600)} hours`;
+      } else if (seconds > 86400 && seconds < 2629743.83) {
+        timeDifference = `${Math.floor(seconds / (3600 * 24))} days`;
+      } else if (seconds > 2629743.83 && seconds < 31556926) {
+        timeDifference = `${Math.floor(seconds / (3600 * 24) / 30)} months`;
+      } else {
+        timeDifference = `${Math.floor(seconds / (3600 * 24) / 30 / 12)} years`;
+      }
+      let ups: number;
+      let isOver = false;
+      if (messages[i].data.ups > 1000) {
+        // @ts-ignore: Unreachable code error
+        ups = (messages[i].data.ups / 1000).toFixed(1);
+        isOver = true;
+      } else {
+        ups = messages[i].data.ups;
+        isOver = false;
+      }
+
+      row.push(
+        <div className="single-commment-container" key={messages[i].data.id}>
+          <div className="single-comment-likes-container">
+            <Arrow
+              onClick={(e: any) => {
+                if (e.currentTarget.style.stroke !== "rgb(230, 90, 90)") {
+                  e.currentTarget.style.fill = "rgb(230, 90, 90)";
+                  e.currentTarget.style.stroke = "rgb(230, 90, 90)";
+                  ups = ups + 1;
+                } else {
+                  e.currentTarget.style.fill = "transparent";
+                  e.currentTarget.style.stroke = "rgb(50, 50, 50)";
+                  ups = ups - 1;
+                }
+              }}
+              styling="single-comment-like single-comment-arrows"
+            />
+            <p>
+              {ups}
+              {isOver ? <span>k</span> : null}
+            </p>
+            <Arrow
+              onClick={(e: any) => {
+                if (e.currentTarget.style.stroke !== "rgb(230, 90, 90)") {
+                  e.currentTarget.style.fill = "rgb(230, 90, 90)";
+                  e.currentTarget.style.stroke = "rgb(230, 90, 90)";
+                  ups = ups + 1;
+                } else {
+                  e.currentTarget.style.fill = "transparent";
+                  e.currentTarget.style.stroke = "rgb(50, 50, 50)";
+                  ups = ups - 1;
+                }
+              }}
+              styling="single-comment-dislike single-comment-arrows"
+            />
+          </div>
+          <div>
+            <div className="comments-header-container">
+              <img src={filtered} alt="" />
+              <p>{messages[i].data.author} </p>
+              <span style={{ color: "rgb(150, 150, 150)" }}>
+                • {timeDifference}
+              </span>
             </div>
             <div
+              className="single-comment-body"
               dangerouslySetInnerHTML={{
                 __html: decodeHtml(messages[i].data.body_html),
               }}
             ></div>
           </div>
-        );
-      }
+        </div>
+      );
     }
 
+    // console.log(user.length, row.length, messages.length);
+    // https://stackoverflow.com/questions/26568536/remove-all-items-after-an-index
+    row.length = user.length;
     return <>{row}</>;
   }
-
-  useEffect(() => {
-    (async function test() {
-      for (let i = 0; i < messages.length; i++) {
-        await fetch(
-          `https://www.reddit.com/user/${messages[i].data.author}/about.json`
-        )
-          .then((response) => response.json())
-          .then((data) => {
-            console.log(data);
-            setUser((prevState: any) => [...prevState, data.data]);
-          });
-      }
-    })();
-  }, [fetchUser]);
 
   if (!data) return null;
   if (!data.post1.body) return null;
@@ -203,7 +270,9 @@ export default function Comments() {
           </div>
         </div>
         <data.post1.body data={{ data: data.post1 }}></data.post1.body>
-        <MessageBody />
+        <div className="message-body-container">
+          <MessageBody />
+        </div>
       </div>
     </div>
   );

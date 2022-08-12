@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png";
 import SearchIcon from "../assets/SearchIcon";
 
@@ -7,6 +8,7 @@ export default function Header() {
   const [header, setHeader] = useState("header");
   const [hovered, setHovered] = useState(false);
   const [bottomScroll, setBottomScroll] = useState("header-bottom");
+  const navigate = useNavigate();
 
   // hovered src: https://www.reddit.com/r/threejs/comments/l63kgm/change_mouse_to_pointer_on_hover_with_react_three/
 
@@ -36,7 +38,14 @@ export default function Header() {
             }}
             id="header-logo-container"
           >
-            <img id="header-logo" src={logo} alt="" />
+            <img
+              id="header-logo"
+              onClick={() => {
+                navigate("/", { replace: true });
+              }}
+              src={logo}
+              alt=""
+            />
           </div>
           <input id="header-search" type="text" placeholder="Search Reddit" />
           <div

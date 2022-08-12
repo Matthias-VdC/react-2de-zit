@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+
 /* eslint-disable jsx-a11y/img-redundant-alt */
 export default function ImageBody(props: any) {
   return (

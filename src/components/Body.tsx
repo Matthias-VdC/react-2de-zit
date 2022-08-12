@@ -13,16 +13,15 @@ export default function Body(props: any) {
       let response;
 
       if (nr) {
-        response = await fetchData(5, 5, next, nr);
+        response = await fetchData(5, 5, next, nr, undefined);
       } else {
-        response = await fetchData(5, 5, next, 0);
+        response = await fetchData(5, 5, next, 0, undefined);
       }
 
       if (bodyData) {
-        // console.log("response", Object.assign(bodyData, response));
+        // Adds up new object to previous object into one single object
         setBodyData(Object.assign(bodyData, response));
       } else {
-        // console.log("response", response);
         setBodyData(response);
       }
     } catch (e) {

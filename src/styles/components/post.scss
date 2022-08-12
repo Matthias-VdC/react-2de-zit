@@ -141,13 +141,13 @@
 }
 
 .thumbsUp:hover {
-    fill: $lupvote;
-    stroke: $lupvote;
+    fill: $lupvote !important;
+    stroke: $lupvote !important;
 }
 
 .thumbsDown:hover {
-    fill: $ldownvote;
-    stroke: $ldownvote;
+    fill: $ldownvote !important;
+    stroke: $ldownvote !important;
 }
 
 .thumbsDown:active {

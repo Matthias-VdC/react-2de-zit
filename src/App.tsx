@@ -1,6 +1,6 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import Comments from "./components/Comments";
+import Comments from "./pages/Comments.page";
 import Header from "./components/Header";
 import Home from "./pages/Home.page";
 

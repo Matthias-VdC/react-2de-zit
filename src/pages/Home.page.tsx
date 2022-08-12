@@ -14,7 +14,7 @@ export default function Home() {
     (async function fetch() {
       try {
         // undefined wrong but works so I won't bother to fix it until it becomes a problem :)
-        const response = await fetchData(2, 2, undefined, undefined);
+        const response = await fetchData(2, 2, undefined, undefined, undefined);
         console.log("response", response);
         setPostData(response);
       } catch (e) {

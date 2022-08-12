@@ -111,7 +111,7 @@ audio::-webkit-media-controls{
 .bodyPost-container {
     display: flex;
     flex-direction: column;
-    border: 1px solid #5296dd;
+    border: 1px solid rgba(0, 0, 0, 0.08);
     margin-top: 50px;
     width: 85%;
     max-width: 1500px;
@@ -164,7 +164,7 @@ audio::-webkit-media-controls{
     display: flex;
     align-items: center;
     padding: 12px;
-    background-color: #EFF7FF;
+    background-color: #f0f0f5;
     height: 50px;
     
     img {
@@ -247,7 +247,7 @@ audio::-webkit-media-controls{
     height: 40px;
     align-items: center;
     padding: 12px;
-    background-color: #EFF7FF;
+    background-color: #f0f0f5;
 
     .bodyPost-footer-like-container {
         display: flex;

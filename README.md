@@ -8,3 +8,4 @@
     + https://www.codegrepper.com/code-examples/javascript/javascript+window.location.reload+only+once+in+react
     + https://michaelmovsesov.com/articles/fix-css-position-sticky-not-working
     + https://stackoverflow.com/questions/26568536/remove-all-items-after-an-index
+    + https://getcssscan.com/css-box-shadow-examples

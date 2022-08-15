@@ -5,7 +5,9 @@ export default function ImageBody(props: any) {
   return (
     <div className="post-body-containers">
       <div className="post-body-image-container">
-        <p className="post-body-image-title">{props.data.data.title}</p>
+        <p className="post-body-image-title">
+          {props.data.data.title.replace(/ &amp; /gm, ". ")}
+        </p>
         <img
           className="post-body-image"
           src={props.data.data.url}

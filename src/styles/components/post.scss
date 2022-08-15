@@ -5,7 +5,7 @@
     background-color: $lightbg;
     width: 500px;
     height: 700px;
-    border-radius: 24px;
+    border-radius: 8px;
     border: 1px solid $blue;
     overflow: hidden;
     box-shadow: rgba(0, 0, 0, 0.45) 0px 25px 20px -20px;
@@ -120,7 +120,7 @@
 }
 
 .thumbs {
-    stroke: $blue;
+    stroke: rgba(0, 0, 0, 0.9);
     stroke-width: 2px;
     fill: rgba(0,0,0,0);
     overflow: visible;

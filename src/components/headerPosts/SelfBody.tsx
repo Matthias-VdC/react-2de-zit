@@ -15,7 +15,9 @@ export default function SelfBody(props: any) {
       className="post-body-containers"
       style={{ display: "flex", flexDirection: "column", overflow: "scroll" }}
     >
-      <p className="post-body-hosted-title">{data.data.data.title}</p>
+      <p className="post-body-hosted-title">
+        {data.data.data.title.replace(/ &amp; /gm, ". ")}
+      </p>
       <div
         dangerouslySetInnerHTML={{ __html: decodeHtml(data.data.data.self) }}
       ></div>

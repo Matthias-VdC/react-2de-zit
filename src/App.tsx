@@ -3,6 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import Comments from "./pages/Comments.page";
 import Header from "./components/Header";
 import Home from "./pages/Home.page";
+import Subreddit from "./pages/Subreddit.page";
 
 function App() {
   return (
@@ -22,6 +23,15 @@ function App() {
           <>
             <Header />
             <Comments />
+          </>
+        }
+      />
+      <Route
+        path="/subreddit/:id"
+        element={
+          <>
+            <Header />
+            <Subreddit />
           </>
         }
       />

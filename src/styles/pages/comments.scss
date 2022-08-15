@@ -88,89 +88,98 @@
             }
         }
     
-    .message-body-container {
-        overflow: hidden;
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-
-        & div:first-child {
-            border: none;
-        }
-        
-        .single-commment-container:first {
-            margin-top: 54px !important;
-            border-top: 1px solid black;
-        }
-
-        .single-commment-container {
-            padding-top: 24px;
-            width: calc(100%);
-            padding-left: 24px;
-            border-top: 1px solid rgba(0, 0, 0, 0.05);
+        .message-body-container {
+            overflow: hidden;
+            width: 100%;
             display: flex;
+            flex-direction: column;
 
-            .single-comment-likes-container {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: space-evenly;
-                margin-right: 30px;
-
-                .single-comment-arrows {
-                    stroke: rgb(50, 50, 50);
-                    width: 25px;
-                    height: 25px;
-                }
-
-
-                .single-comment-like {
-                }
-    
-                .single-comment-dislike {
-                    transform: rotate(180deg);
-                }
-            }
-
-            .single-comment-body {
-                font-family: Noto Sans, Arial, sans-serif;
-                font-size: 15px;
-                margin-bottom: 32px;
-                margin-left: 50px;
-                width: calc(100% - 100px);
+            & div:first-child {
+                border: none;
             }
             
-            .comments-header-container {
+            .single-commment-container:first {
+                margin-top: 54px !important;
+                border-top: 1px solid black;
+            }
+
+            .single-commment-container {
+                padding-top: 24px;
+                width: calc(100%);
+                padding-left: 24px;
+                border-top: 1px solid rgba(0, 0, 0, 0.05);
                 display: flex;
-                align-items: center;
-                flex-direction: row;
-                font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans", Arial, sans-serif;
 
-                img {
-                    margin-right: 10px;
-                    border-radius: 100%;
-                    width: 40px;
-                    height: 40px;
-                    transition: 0.4s all ease-in-out;
+                .single-comment-likes-container {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: space-evenly;
+                    margin-right: 30px;
+                    max-height: 150px;
+
+                    .single-comment-arrows {
+                        stroke: rgb(50, 50, 50);
+                        width: 25px;
+                        height: 25px;
+                    }
+
+
+                    .single-comment-like {
+                    }
+        
+                    .single-comment-dislike {
+                        transform: rotate(180deg);
+                    }
                 }
 
-                p {
-                    margin-right: 6px;
-                    border-bottom: 1px solid transparent;
+                .single-comment-body {
+                    font-family: Noto Sans, Arial, sans-serif;
+                    font-size: 15px;
+                    margin-bottom: 32px;
+                    margin-left: 50px;
+                    width: calc(100% - 100px);
                 }
+                
+                .comments-header-container {
+                    display: flex;
+                    align-items: center;
+                    flex-direction: row;
+                    font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans", Arial, sans-serif;
 
-                img:hover {
-                    cursor: pointer;
-                    opacity: 0.85;
-                }
+                    img {
+                        margin-right: 10px;
+                        border-radius: 100%;
+                        width: 40px;
+                        height: 40px;
+                        transition: 0.4s all ease-in-out;
+                    }
 
-                p:hover {
-                    cursor: pointer;
-                    border-bottom: 1px solid black;
+                    p {
+                        margin-right: 6px;
+                        border-bottom: 1px solid transparent;
+                    }
+
+                    img:hover {
+                        cursor: pointer;
+                        opacity: 0.85;
+                    }
+
+                    p:hover {
+                        cursor: pointer;
+                        border-bottom: 1px solid black;
+                    }
                 }
             }
         }
     }
+    .message-upClick {
+        stroke: #c64747 !important;
+        fill: #c64747 !important;
+    }
+    .message-downClick {
+        stroke: #c64747 !important;
+        fill: #c64747 !important;
     }
 }
 

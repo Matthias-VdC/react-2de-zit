@@ -43,7 +43,7 @@ export default function HostedBody(props) {
   return (
     <div className="post-body-containers">
       <div>
-        <p className="post-body-hosted-title">{props.data.data.title}</p>
+        <p className="post-body-hosted-title">{props.data.data.title.replace(/ &amp; /gm, ". ")}</p>
         <video
           id={"video" + props.data.data.nr}
           className="post-body-hosted-video"

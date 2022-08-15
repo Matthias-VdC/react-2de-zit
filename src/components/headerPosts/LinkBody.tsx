@@ -15,7 +15,9 @@ export default function LinkBody(props: any) {
           width: "100%",
         }}
       >
-        <p className="post-body-hosted-title">{data.data.data.title}</p>
+        <p className="post-body-hosted-title">
+          {data.data.data.title.replace(/ &amp; /gm, ". ")}
+        </p>
         <a href={data.data.data.link} rel="noreferrer" target="_blank">
           <img
             className="post-body-link-thumbnail"

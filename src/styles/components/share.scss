@@ -3,7 +3,7 @@
 .share-button {
     width: 40px;
     height: 40px;
-    fill: #5296dd;
+    fill: rgba(0, 0, 0, 0.4);
     margin-right: 3%;
     transition: 0.3s all ease-in-out;
 }
@@ -34,7 +34,7 @@
         z-index: 1;
         transition: 0.35s all ease-in-out;
         user-select: none;
-        border: 1px solid #5296dd;
+        border: 1px solid rgba(0, 0, 0, 0.2);
     }
 
     &:hover {
@@ -46,7 +46,7 @@
         }
 
         & + svg {
-            fill: $uitext;
+            fill: rgba(0, 0, 0, 0.7);
         }
     }
 }

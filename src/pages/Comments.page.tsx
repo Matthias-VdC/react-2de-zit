@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Arrow from "../assets/Arrow";
 import Dotdotdot from "../components/Dotdotdot";
 import fetchData from "../services/RedditService";
 import Comment from "../assets/Comment";
-import defaultLogo from "../assets/subreddit-default.png";
+import MessageBody from "../components/comments/MessageBody";
 
 export default function Comments() {
   // https://v5.reactrouter.com/web/example/url-params
@@ -19,6 +19,10 @@ export default function Comments() {
   const [fetchUser, setFetchUser] = useState<any>(false);
   const [fetchComments, setFetchComments] = useState<any>(false);
 
+  const handleOnClick = useCallback(
+    () => navigate("../subreddit/" + data.post1.subreddit, { replace: true }),
+    [data, navigate]
+  );
   useEffect(() => {
     // Fix eventlisteners on html tag persisting through pages
     // https://www.codegrepper.com/code-examples/javascript/javascript+window.location.reload+only+once+in+react
@@ -69,125 +73,6 @@ export default function Comments() {
       }
     })();
   }, [fetchUser]);
-
-  function decodeHtml(html: any) {
-    var txt = document.createElement("textarea");
-    txt.innerHTML = html;
-    let newValue = txt.value.replace(/(.*?<!-- SC_OFF -->)/, "");
-    newValue = newValue.replace(/(.*?<!-- SC_ON -->)/, "");
-    let removeComma = newValue.replace(/(?<=\>)(,)(?=\<)/gm, "");
-    return removeComma;
-  }
-
-  function MessageBody() {
-    const row: JSX.Element[] = [];
-
-    let filtered;
-    for (let i = 0; i < messages.length - 1; i++) {
-      if (user[i]) {
-        if (user[i].icon_img) {
-          filtered = user[i].icon_img;
-          filtered = filtered.replace(/\bamp;\b/gm, "");
-        } else if (user[i].snoovatar_img) {
-          filtered = user[i].snoovatar_img;
-        } else {
-          filtered = defaultLogo;
-        }
-      }
-
-      const dateNow = new Date();
-      // https://stackoverflow.com/questions/44861119/convert-reddits-created-unix-timestamp-to-readable-date
-      let datePost = new Date(messages[i].data.created * 1000);
-      let seconds = Math.floor((datePost.getTime() - dateNow.getTime()) / 1000);
-      // https://stackoverflow.com/questions/4652104/convert-a-negative-number-to-a-positive-one-in-javascript
-      seconds = Math.abs(seconds);
-      let timeDifference = "";
-
-      if (seconds < 60) {
-        timeDifference = `${seconds} seconds`;
-      } else if (seconds > 60 && seconds < 3600) {
-        // https://stackoverflow.com/questions/37096367/how-to-convert-seconds-to-minutes-and-hours-in-javascript
-        timeDifference = `${Math.floor((seconds % 3600) / 60)} minutes`;
-      } else if (seconds > 3600 && seconds < 86400) {
-        timeDifference = `${Math.floor(seconds / 3600)} hours`;
-      } else if (seconds > 86400 && seconds < 2629743.83) {
-        timeDifference = `${Math.floor(seconds / (3600 * 24))} days`;
-      } else if (seconds > 2629743.83 && seconds < 31556926) {
-        timeDifference = `${Math.floor(seconds / (3600 * 24) / 30)} months`;
-      } else {
-        timeDifference = `${Math.floor(seconds / (3600 * 24) / 30 / 12)} years`;
-      }
-      let ups: number;
-      let isOver = false;
-      if (messages[i].data.ups > 1000) {
-        // @ts-ignore: Unreachable code error
-        ups = (messages[i].data.ups / 1000).toFixed(1);
-        isOver = true;
-      } else {
-        ups = messages[i].data.ups;
-        isOver = false;
-      }
-
-      row.push(
-        <div className="single-commment-container" key={messages[i].data.id}>
-          <div className="single-comment-likes-container">
-            <Arrow
-              onClick={(e: any) => {
-                if (e.currentTarget.style.stroke !== "rgb(230, 90, 90)") {
-                  e.currentTarget.style.fill = "rgb(230, 90, 90)";
-                  e.currentTarget.style.stroke = "rgb(230, 90, 90)";
-                  ups = ups + 1;
-                } else {
-                  e.currentTarget.style.fill = "transparent";
-                  e.currentTarget.style.stroke = "rgb(50, 50, 50)";
-                  ups = ups - 1;
-                }
-              }}
-              styling="single-comment-like single-comment-arrows"
-            />
-            <p>
-              {ups}
-              {isOver ? <span>k</span> : null}
-            </p>
-            <Arrow
-              onClick={(e: any) => {
-                if (e.currentTarget.style.stroke !== "rgb(230, 90, 90)") {
-                  e.currentTarget.style.fill = "rgb(230, 90, 90)";
-                  e.currentTarget.style.stroke = "rgb(230, 90, 90)";
-                  ups = ups + 1;
-                } else {
-                  e.currentTarget.style.fill = "transparent";
-                  e.currentTarget.style.stroke = "rgb(50, 50, 50)";
-                  ups = ups - 1;
-                }
-              }}
-              styling="single-comment-dislike single-comment-arrows"
-            />
-          </div>
-          <div>
-            <div className="comments-header-container">
-              <img src={filtered} alt="" />
-              <p>{messages[i].data.author} </p>
-              <span style={{ color: "rgb(150, 150, 150)" }}>
-                • {timeDifference}
-              </span>
-            </div>
-            <div
-              className="single-comment-body"
-              dangerouslySetInnerHTML={{
-                __html: decodeHtml(messages[i].data.body_html),
-              }}
-            ></div>
-          </div>
-        </div>
-      );
-    }
-
-    // console.log(user.length, row.length, messages.length);
-    // https://stackoverflow.com/questions/26568536/remove-all-items-after-an-index
-    row.length = user.length;
-    return <>{row}</>;
-  }
 
   if (!data) return null;
   if (!data.post1.body) return null;
@@ -257,9 +142,9 @@ export default function Comments() {
           }}
           className="bodyPost-header"
         >
-          <img src={data.post1.icon} alt="" />
+          <img onClick={handleOnClick} src={data.post1.icon} alt="" />
           <div>
-            <div>
+            <div onClick={handleOnClick}>
               <p className="subreddit-text">r/{data.post1.subreddit}</p>
             </div>
             <div>
@@ -271,7 +156,9 @@ export default function Comments() {
         </div>
         <data.post1.body data={{ data: data.post1 }}></data.post1.body>
         <div className="message-body-container">
-          <MessageBody />
+          {messages.map((e: any, i: any) => (
+            <MessageBody messages={messages} i={i - 1} key={i} user={user} />
+          ))}
         </div>
       </div>
     </div>

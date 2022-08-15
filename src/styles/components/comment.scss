@@ -3,7 +3,7 @@
 .footer-comment {
     width: 40px;
     height: 40px;
-    fill: #5296dd;
+    fill: rgba(0, 0, 0, 0.4);
     margin-left: 16px;
     margin-right: 16px;
     transition: 0.3s all ease-in-out;
@@ -13,16 +13,16 @@
         transition: 0.3s all ease-in-out;
 
         &:hover {
-            color: $uitext;
+            color: rgba(0, 0, 0, 0.8);
         }
     }
 
     &:hover {
         cursor: pointer;
-        fill: $uitext;
+        fill: rgba(0, 0, 0, 0.8);
 
         & + p {
-            color: $uitext;
+            color: rgba(0, 0, 0, 0.8);
         }
     }
 }

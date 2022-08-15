@@ -18,7 +18,7 @@ export default function BodyPost(props: any) {
   const navigate = useNavigate();
   const handleOnClick = useCallback(
     () => navigate("/post/" + data.id, { replace: true }),
-    [navigate]
+    [data.id, navigate]
   );
 
   useEffect(() => {
@@ -52,8 +52,8 @@ export default function BodyPost(props: any) {
 
         <div
           className="bodyPost-body"
-          onClick={async () => {
-            await handleOnClick();
+          onDoubleClick={() => {
+            handleOnClick();
           }}
         >
           {over18 ? (

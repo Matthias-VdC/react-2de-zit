@@ -13,9 +13,9 @@ export default function Body(props: any) {
       let response;
 
       if (nr) {
-        response = await fetchData(5, 5, next, nr, undefined);
+        response = await fetchData(5, 5, next, nr, false);
       } else {
-        response = await fetchData(5, 5, next, 0, undefined);
+        response = await fetchData(5, 5, next, 0, false);
       }
 
       if (bodyData) {

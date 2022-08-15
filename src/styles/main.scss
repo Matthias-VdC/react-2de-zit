@@ -5,15 +5,40 @@
 @use "./components/body.scss";
 @use "./components/post.scss";
 @use "./components/header.scss";
+@use "./components/share.scss";
+@use "./components/comment.scss";
 
 // Pages
 @use "./pages/home.scss";
+@use "./pages/comments.scss";
+@use "./pages/subreddit.scss";
 
 
 
-
+@import "./abstract/variables.scss";
 // Global
 body {
     margin: 0;
     height: 200vh;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+p {
+    margin:  0;
+}
+
+a:focus {
+    box-shadow: none;
+    outline: none;
+}
+
+img {
+    object-fit: contain;
+    max-width: 1500px;
+    max-height: 700px;
+    border-radius: 8px;
+}
+
+video {
+    border-radius: 4px;
 }

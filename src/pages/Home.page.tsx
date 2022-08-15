@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import Post from "../components/posts/Post";
+import Post from "../components/headerPosts/Post";
 import fetchData from "../services/RedditService";
 import Body from "../components/Body";
 
@@ -8,11 +8,13 @@ export default function Home() {
   const [scrollStateBody, setScrollStateBody] = useState("scrollOut");
   const [postData, setPostData] = useState<any>(null);
   const [postList, setPostList] = useState<any>([]);
+  const [bodyData, setBodyData] = useState<any>([]);
 
   useEffect(() => {
     (async function fetch() {
       try {
-        const response = await fetchData(2, 2);
+        // undefined wrong but works so I won't bother to fix it until it becomes a problem :)
+        const response = await fetchData(2, 2, undefined, undefined, false);
         console.log("response", response);
         setPostData(response);
       } catch (e) {
@@ -20,7 +22,7 @@ export default function Home() {
       }
     })();
 
-    window.addEventListener("scroll", () => {
+    document.addEventListener("scroll", () => {
       if (window.pageYOffset !== 0) {
         setScrollState("scrollOut");
         setScrollStateBody("scrollInBody");
@@ -51,7 +53,7 @@ export default function Home() {
       <div id="home-post-container" className={scrollState}>
         {postList}
       </div>
-      <Body className={scrollStateBody}></Body>
+      <Body className={scrollStateBody} />
     </>
   );
 }

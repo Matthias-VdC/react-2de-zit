@@ -3,41 +3,89 @@
 .post-container {
     position: relative;
     background-color: $lightbg;
-    width: 400px;
-    height: 600px;
-    border-radius: 24px;
-    border: 2px solid $blue;
+    width: 500px;
+    height: 700px;
+    border-radius: 8px;
+    border: 1px solid $blue;
     overflow: hidden;
-
+    box-shadow: rgba(0, 0, 0, 0.45) 0px 25px 20px -20px;
+    
     .post-header {
         width: 100%;
-        height: 12.5%;
-        background-color: $white;
+        height: 10%;
         display: flex;
         align-items: center;
+        background-color: #f0f0f5;
+
+        img {
+            margin-right: 6px;
+            margin-left: 10px;
+            transition: 0.4s all ease-in-out;
+        }
+
+        img:hover {
+            cursor: pointer;
+            opacity: 0.85;
+        }
+
+        div:first-child p {
+            position: relative;
+            display: inline;
+            overflow: hidden;
+            border-bottom: 1px solid transparent;
+            transition: 0.3s all ease-in-out;
+        }
+
+        div div:first-child p{
+            margin-bottom: 10px;
+        }
     }
 
     .post-body {
         width: 100%;
-        height: 75%;
-        background-color: $lightbg;
+        height: 90%;
+        max-height: 563px;
+        background-color: $white;
+
+        p {
+            margin: 12px 0 0 0;
+            font-size: 1.2em;
+            font-weight: 600;
+            cursor: auto;
+        }
     }
 
     .post-footer {
+        display: flex;
         width: 100%;
-        height: 12.5%;
-        background-color: $white;
+        height: 10%;
+        background-color: #f0f0f5;
+        align-items: center;
+        justify-content: space-between;
+
+        p {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            font-weight: 500;
+        }
     }
 }
 
 .post-body-containers {
-    height: 100%;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     text-align: center;
+    max-height: 100%;
+    width: 100%;
+    height: 100%;
+    min-height: 500px;
+
+    div {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-evenly;
+        width: 100%;
+    }
 }
 
 .post-body-containers:hover {
@@ -47,11 +95,10 @@
 .post-body-image-container {
     display: flex;
     width: 100%;
-    height: calc(100% - 20px);
+    height: 100%;
     justify-content: space-between;
     align-items: center;
     flex-direction: column;
-    padding: 5px 0;
 }
 
 .post-body-image-title {
@@ -66,13 +113,14 @@
 }
 
 .post-body-image {
-    width: 100%;
-    height: 100%;
+    width:100%;
+    height:100%;
     object-fit: contain;
+    overflow: hidden;
 }
 
 .thumbs {
-    stroke:  $blue;
+    stroke: rgba(0, 0, 0, 0.9);
     stroke-width: 2px;
     fill: rgba(0,0,0,0);
     overflow: visible;
@@ -80,7 +128,12 @@
 }
 
 .thumbsDown {
+    margin-left: 6px;
     transform: rotate(180deg);
+}
+
+.thumbsUp {
+    margin-right: 6px;
 }
 
 .thumbs:hover {
@@ -88,13 +141,13 @@
 }
 
 .thumbsUp:hover {
-    fill: $lupvote;
-    stroke: $lupvote;
+    fill: $lupvote !important;
+    stroke: $lupvote !important;
 }
 
 .thumbsDown:hover {
-    fill: $ldownvote;
-    stroke: $ldownvote;
+    fill: $ldownvote !important;
+    stroke: $ldownvote !important;
 }
 
 .thumbsDown:active {
@@ -117,20 +170,25 @@
     display: flex;
     justify-content: space-evenly;
     align-items: center;
-    width: 35%;
     height: 100%;
     margin-left: 3%;
+
+    p {
+        user-select: none;
+    }
 }
 
 .post-body-hosted-video {
-    width: 60%;
-    height: auto;
+    height: 75%;
+    width: auto;
+    max-width: 100%;
     object-fit: contain;
+    max-height: 700px;
 }
 
 .post-body-link-thumbnail {
-    width: 400px;
-    height: auto;
+    width: 100%;
+    height: 100%;
 }
 
 .scrollIn {
@@ -138,7 +196,6 @@
 }
 
 .scrollOut {
-
     animation: fadeOut 0.5s ease-in-out forwards;
 }
 
@@ -195,7 +252,8 @@
         transform: translateY(0) scale(100%);
     }
     100% {
-        opacity: 0%; 
+        opacity: 0%;
+        visibility: hidden;
         transform: translateY(-200px) scale(80%);
     }
 }

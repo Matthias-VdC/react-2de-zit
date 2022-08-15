@@ -1,0 +1,28 @@
+@import "../abstract/variables.scss";
+
+.footer-comment {
+    width: 40px;
+    height: 40px;
+    fill: rgba(0, 0, 0, 0.4);
+    margin-left: 16px;
+    margin-right: 16px;
+    transition: 0.3s all ease-in-out;
+
+    & + p {
+        cursor: pointer;
+        transition: 0.3s all ease-in-out;
+
+        &:hover {
+            color: rgba(0, 0, 0, 0.8);
+        }
+    }
+
+    &:hover {
+        cursor: pointer;
+        fill: rgba(0, 0, 0, 0.8);
+
+        & + p {
+            color: rgba(0, 0, 0, 0.8);
+        }
+    }
+}

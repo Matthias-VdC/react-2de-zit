@@ -7,8 +7,17 @@ export default function LinkBody(props: any) {
   }
   return (
     <div className="post-body-containers">
-      <div>
-        <p className="post-body-hosted-title">{data.data.data.title}</p>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          width: "100%",
+        }}
+      >
+        <p className="post-body-hosted-title">
+          {data.data.data.title.replace(/ &amp; /gm, ". ")}
+        </p>
         <a href={data.data.data.link} rel="noreferrer" target="_blank">
           <img
             className="post-body-link-thumbnail"

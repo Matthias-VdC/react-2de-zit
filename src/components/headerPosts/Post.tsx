@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
 import Arrow from "../../assets/Arrow";
+import Share from "../../assets/share";
+import Comment from "../../assets/Comment";
+import Dotdotdot from "../Dotdotdot";
 
 let rows = [];
 
@@ -24,6 +27,7 @@ export default function Post(props: any) {
 
   if (!data) return null;
   if (!data.data) return null;
+  if (!data.data.body) return null;
 
   return (
     <>
@@ -32,14 +36,15 @@ export default function Post(props: any) {
           <img className="post-header-icon" src={data.data.icon} alt="" />
           <div>
             <div>
-              <p>r/{data.data.subreddit}</p>
+              <p className="subreddit-text">r/{data.data.subreddit}</p>
             </div>
             <div>
-              <p>
+              <p className="subreddit-user">
                 Posted by u/{data.data.author} • {data.data.time} ago
               </p>
             </div>
           </div>
+          <Dotdotdot />
         </div>
         <div className="post-body">
           <data.data.body data={data}></data.data.body>
@@ -77,6 +82,29 @@ export default function Post(props: any) {
               }}
               styling="thumbsDown"
             />
+          </div>
+
+          <div
+            style={{
+              position: "relative",
+              display: "flex",
+              marginRight: "3%",
+            }}
+          >
+            {/* https://www.w3schools.com/css/css_tooltip.asp */}
+            <div style={{ position: "relative" }}>
+              <div className="tooltip">
+                <p className="tooltiptext">Share post</p>
+              </div>
+              <Share />
+            </div>
+
+            <div style={{ position: "relative" }}>
+              <div className="tooltip">
+                <p className="tooltiptext">Comment</p>
+              </div>
+              <Comment />
+            </div>
           </div>
         </div>
       </div>
